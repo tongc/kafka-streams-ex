@@ -46,7 +46,6 @@ public class ExclamationKafkaStream {
         config.put(StreamsConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
             StringDeserializer.class);
         
-        final Serializer<String> stringSerializer = new StringSerializer();
         final Deserializer<byte[]> byteArrayDeserializer = 
             new ByteArrayDeserializer();
         final Deserializer<String> stringDeserializer = 
