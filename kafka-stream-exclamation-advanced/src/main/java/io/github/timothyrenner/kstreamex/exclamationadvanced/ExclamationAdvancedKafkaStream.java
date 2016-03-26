@@ -1,4 +1,4 @@
-package io.github.timothyrenner;
+package io.github.timothyrenner.kstreamex.exclamationadvanced;
 
 import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.apache.kafka.common.serialization.ByteArraySerializer;
