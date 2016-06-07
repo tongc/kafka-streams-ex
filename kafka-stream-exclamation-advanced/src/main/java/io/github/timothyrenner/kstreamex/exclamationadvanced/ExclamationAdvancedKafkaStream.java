@@ -1,11 +1,6 @@
 package io.github.timothyrenner.kstreamex.exclamationadvanced;
 
-import org.apache.kafka.common.serialization.ByteArrayDeserializer;
-import org.apache.kafka.common.serialization.ByteArraySerializer;
-import org.apache.kafka.common.serialization.StringDeserializer;
-import org.apache.kafka.common.serialization.StringSerializer;
-import org.apache.kafka.common.serialization.Serializer;
-import org.apache.kafka.common.serialization.Deserializer;
+import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsConfig;
@@ -59,33 +54,21 @@ public class ExclamationAdvancedKafkaStream {
         Properties config = new Properties();
         
         // For the cluster. Assumes everything is local.
-        config.put(StreamsConfig.JOB_ID_CONFIG, 
+        config.put(StreamsConfig.APPLICATION_ID_CONFIG, 
             "exclamation-advanced-kafka-streams");
         config.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         config.put(StreamsConfig.ZOOKEEPER_CONNECT_CONFIG, "localhost:2181");
         
         // Serde.
-        config.put(StreamsConfig.KEY_SERIALIZER_CLASS_CONFIG,
-            ByteArraySerializer.class);
-        config.put(StreamsConfig.KEY_DESERIALIZER_CLASS_CONFIG,
-            ByteArrayDeserializer.class);
-        config.put(StreamsConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-            StringSerializer.class);
-        config.put(StreamsConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
-            StringDeserializer.class);
-        
-        final Deserializer<byte[]> byteArrayDeserializer = 
-            new ByteArrayDeserializer();
-        final Deserializer<String> stringDeserializer = 
-            new StringDeserializer();
+		config.put(StreamsConfig.KEY_SERDE_CLASS_CONFIG,
+			Serdes.ByteArray().getClass().getName());
+		config.put(StreamsConfig.VALUE_SERDE_CLASS_CONFIG,
+			Serdes.String().getClass().getName());
         
         KStreamBuilder builder = new KStreamBuilder();
         
         // Read the stream from the topic into a KStream.
-        KStream<byte[], String> text = builder.stream(
-            byteArrayDeserializer,
-            stringDeserializer,
-            "console");
+        KStream<byte[], String> text = builder.stream("console");
         
         // Apply the transformations.
         KStream<byte[], String> exclamation = 
