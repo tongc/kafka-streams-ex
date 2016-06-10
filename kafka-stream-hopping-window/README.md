@@ -1,4 +1,4 @@
-# Tumbling Windows
+# Hopping Windows
 
 This project demonstrates the behavior of tumbling windows, which are `TimeWindows` with an additional `advance` parameter to determine the size of the "hops".
 Tumbling windows produce multiple windows per `size` value which overlap, and when the latest window falls out of the windowed range a new empty window appears in the front.
