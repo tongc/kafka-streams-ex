@@ -1,9 +1,9 @@
 # Hopping Windows
 
-This project demonstrates the behavior of tumbling windows, which are `TimeWindows` with an additional `advance` parameter to determine the size of the "hops".
-Tumbling windows produce multiple windows per `size` value which overlap, and when the latest window falls out of the windowed range a new empty window appears in the front.
+This project demonstrates the behavior of hopping windows, which are `TimeWindows` with an additional `advance` parameter to determine the size of the "hops".
+Hopping windows produce multiple windows per `size` value which overlap, and when the latest window falls out of the windowed range a new empty window appears in the front.
 
-This example is an extremely simplistic demonstration of how tumbling windows work.
+This example is an extremely simplistic demonstration of how hopping windows work.
 The input data is generated within the program via a Kafka producer (a very nice property of Kafka streams programs being simple Java applications), and simply writes a random Long to the stream with the key, "A".
 The output is simply the counts of the elements in each of the windows.
 
@@ -57,7 +57,7 @@ dev-resources/start_consumer.sh
 
 This consumer listens on the "long-counts-all" topic and outputs the grouped counts for each key in the input data set.
 Since there's only one key, this is essentially counting the number of elements in each of the windows.
-What you see with tumbling windows is _all_ of window's counts in the window size range as a separate record, emitted _every time new data enters the KTable_, which is every half second.
+What you see with hopping windows is _all_ of window's counts in the window size range as a separate record, emitted _every time new data enters the KTable_, which is every half second.
 I purposely made this simplistic example to demonstrate precisely what Kafka streams does for it's windows.
 
 To see this in action, fire up the streams program.
