@@ -40,15 +40,16 @@ public class TableJoinKafkaStream {
 
 		// In one ktable, count by key on a ten second tumbling window.
 		KTable<Windowed<String>, Long> longCounts = 
-			longs.countByKey(TimeWindows.of("longCounts", 10000L),
-							 Serdes.String());
+			longs.groupByKey(Serdes.String(), Serdes.Long())
+				 .count(TimeWindows.of("longCounts", 10000L)
+				 				   .until(10000L));
 
 		// In another ktable, sum the values on a ten second tumbling window.
 		KTable<Windowed<String>, Long> longSums = 
-			longs.reduceByKey((v1, v2) -> v1 + v2,
-							  TimeWindows.of("longSums", 10000L),
-							  Serdes.String(),
-							  Serdes.Long());
+			longs.groupByKey(Serdes.String(), Serdes.Long())
+				 .reduce((v1, v2) -> v1 + v2,
+				 		 TimeWindows.of("longSums", 10000L)
+						 			.until(10000L));
 
 		// We can join the two tables to get the average.
 		KTable<Windowed<String>, Double> longAvgs = 
@@ -58,6 +59,9 @@ public class TableJoinKafkaStream {
 
 		// Finally, sink to the long-avgs topic.
 		longAvgs.toStream((wk, v) -> wk.key())
+				// Note that we need to filter null values, which
+				// can be emitted when the window state store is empty.
+				.filter((k,v) -> v != null)
 				.to(Serdes.String(),
 					Serdes.Double(),
 					"long-avgs");
