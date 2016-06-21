@@ -16,8 +16,16 @@ import org.apache.kafka.streams.kstream.KStreamBuilder;
 import java.util.Properties;
 import java.util.Random;
 
+/** Demonstrates a KTable-KTable join.
+ *
+ * @author Timothy Renner
+ */
 public class TableJoinKafkaStream {
 
+    /** Runs the streams program, writing to the "long-avgs" topic.
+     *
+     * @param args Not used.
+     */ 
     public static void main(String[] args) throws Exception {
         
         Properties config = new Properties();

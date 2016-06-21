@@ -16,8 +16,16 @@ import org.apache.kafka.streams.kstream.KStreamBuilder;
 import java.util.Properties;
 import java.util.Random;
 
+/** Demonstrates hopping windows.
+ *
+ * @author Timothy Renner
+ */
 public class HoppingWindowKafkaStream {
     
+    /** Runs the streams program, writing to the "long-counts-all" topic.
+     *
+     * @param args Not used.
+     */
     public static void main(String[] args) throws Exception{
         
         Properties config = new Properties();
@@ -51,10 +59,6 @@ public class HoppingWindowKafkaStream {
                       Serdes.Long(),
                       "long-counts-all");
         
-        // I am at a total loss as to how to select the "oldest" window.
-        // Options are: aggregate to a tumbling window - bad idea, 
-        //  latency could cause periodic misses.
-        // groupby - can't use the key in the aggregation function?
         KafkaStreams streams = new KafkaStreams(builder, config);
         streams.start();
         

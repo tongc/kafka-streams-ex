@@ -16,8 +16,16 @@ import org.apache.kafka.streams.kstream.KStreamBuilder;
 import java.util.Properties;
 import java.util.Random;
 
+/** Demonstrates tumbling windows.
+ *
+ * @author Timothy Renner
+ */
 public class TumblingWindowKafkaStream {
     
+    /** Runs the streams program, writing to the "long-counts-all" topic.
+     *
+     * @param args Not used.
+     */
     public static void main(String[] args) throws Exception {
         
         Properties config = new Properties();
