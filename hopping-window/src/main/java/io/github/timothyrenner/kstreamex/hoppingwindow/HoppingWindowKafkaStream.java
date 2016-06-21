@@ -26,35 +26,35 @@ public class HoppingWindowKafkaStream {
             "hopping-window-kafka-streams");
         config.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         config.put(StreamsConfig.ZOOKEEPER_CONNECT_CONFIG, "localhost:2181");
-		config.put(StreamsConfig.KEY_SERDE_CLASS_CONFIG,
-			Serdes.ByteArray().getClass().getName());
-		config.put(StreamsConfig.VALUE_SERDE_CLASS_CONFIG,
-			Serdes.String().getClass().getName());
+        config.put(StreamsConfig.KEY_SERDE_CLASS_CONFIG,
+            Serdes.ByteArray().getClass().getName());
+        config.put(StreamsConfig.VALUE_SERDE_CLASS_CONFIG,
+            Serdes.String().getClass().getName());
         
         KStreamBuilder builder = new KStreamBuilder();
         
         KStream<byte[], Long> longs = builder.stream(
-			Serdes.ByteArray(), Serdes.Long(), "longs");
+            Serdes.ByteArray(), Serdes.Long(), "longs");
         
         // The hopping windows will count the last second, two seconds,
         // three seconds, etc until the last ten seconds of data are in the
         // windows.
-		KTable<Windowed<byte[]>, Long> longCounts = 
-			longs.countByKey(TimeWindows.of("longCounts", 10000L)
-										.advanceBy(1000L),
-							Serdes.ByteArray());
-										
+        KTable<Windowed<byte[]>, Long> longCounts = 
+            longs.countByKey(TimeWindows.of("longCounts", 10000L)
+                                        .advanceBy(1000L),
+                            Serdes.ByteArray());
+                                        
         // Write to output topic.
         longCounts.toStream((k,v) -> k.key())
-				  .map((k,v) -> KeyValue.pair(k, v))
-				  .to(Serdes.ByteArray(),
-				  	  Serdes.Long(),
-					  "long-counts-all");
+                  .map((k,v) -> KeyValue.pair(k, v))
+                  .to(Serdes.ByteArray(),
+                      Serdes.Long(),
+                      "long-counts-all");
         
-		// I am at a total loss as to how to select the "oldest" window.
-		// Options are: aggregate to a tumbling window - bad idea, 
-		//	latency could cause periodic misses.
-		// groupby - can't use the key in the aggregation function?
+        // I am at a total loss as to how to select the "oldest" window.
+        // Options are: aggregate to a tumbling window - bad idea, 
+        //  latency could cause periodic misses.
+        // groupby - can't use the key in the aggregation function?
         KafkaStreams streams = new KafkaStreams(builder, config);
         streams.start();
         

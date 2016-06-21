@@ -60,10 +60,10 @@ public class ExclamationAdvancedKafkaStream {
         config.put(StreamsConfig.ZOOKEEPER_CONNECT_CONFIG, "localhost:2181");
         
         // Serde.
-		config.put(StreamsConfig.KEY_SERDE_CLASS_CONFIG,
-			Serdes.ByteArray().getClass().getName());
-		config.put(StreamsConfig.VALUE_SERDE_CLASS_CONFIG,
-			Serdes.String().getClass().getName());
+        config.put(StreamsConfig.KEY_SERDE_CLASS_CONFIG,
+            Serdes.ByteArray().getClass().getName());
+        config.put(StreamsConfig.VALUE_SERDE_CLASS_CONFIG,
+            Serdes.String().getClass().getName());
         
         KStreamBuilder builder = new KStreamBuilder();
         
