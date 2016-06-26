@@ -9,3 +9,4 @@ The repository contains the following examples:
 * Exclamation Advanced: Slightly more complicated version of Exclamation that "alerts" on highly exclamated messages.
 * Hopping Windows: Example demonstrating the behavior of hopping windows by counting the elements on a single key.
 * Tumbling Windows: Example demonstrating the behavior of tumbling windows by counting the elements on a single key.
+* Processor: Example demonstrating the processor API, state stores, and custom serializers.
