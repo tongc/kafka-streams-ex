@@ -82,12 +82,13 @@ public class ProcessorKafkaStream {
                              "messages-source")
                .addProcessor("FAST-processor",
                              () -> new MovingAverageProcessor("FAST", 0.1),
-                             "messages-source")
+                             "selector-processor")
                .addProcessor("MEDIUM-processor",
                              () -> new MovingAverageProcessor("MEDIUM", 0.05),
-                             "messages-source")
+                             "selector-processor")
                .addProcessor("SLOW-processor",
-                             () -> new MovingAverageProcessor("SLOW", 0.01))
+                             () -> new MovingAverageProcessor("SLOW", 0.01),
+                             "selector-processor")
                .addStateStore(fastStore, "FAST-processor")
                .addStateStore(mediumStore, "MEDIUM-processor")
                .addStateStore(slowStore, "SLOW-processor")
