@@ -24,6 +24,11 @@ import io.github.timothyrenner.kstreamex.notification.TickGenerator;
  */
 public class NotLookingAtFacebook {
 
+    /** Runs the streams program, writing to the "notifications" and 
+     *  "metrics" topics.
+     *
+     * @param args Not used.
+     */
     public static void main(String[] args) throws Exception {
         
         Properties config = new Properties();
@@ -65,10 +70,15 @@ public class NotLookingAtFacebook {
         // Implement the metrics.
         KTable<Windowed<String>, Long> notificationCounts = 
             notifications.countByKey(
+                // Create a one minute window.
                 TimeWindows.of("notificationCounts", 60000L)
+                            // Hop by ten seconds.
                            .advanceBy(10000L)
+                           // Don't hang on to old values.
                            .until(60000L));
 
+        // Convert notificationCounts to a stream, extract the key (ignore
+        // the embedded time information), and sink to the "metrics" topic.
         notificationCounts.toStream((k,v) -> k.key())
                           .to(Serdes.String(),
                               Serdes.Long(),
