@@ -18,7 +18,6 @@ public class LogonGenerator implements Runnable {
     private String[] users;
     private KafkaProducer producer;
 
-    private ThreadLocalRandom rng = ThreadLocalRandom.current();
     private String[] events = {"LOGON", "LOGOFF"};
 
     private HashMap<String, String> loggedOn = new HashMap<String, String>();
@@ -38,6 +37,9 @@ public class LogonGenerator implements Runnable {
     /** Simulates logon events. Writes to the "logons" topic. */
     @Override
     public void run() {
+        
+        ThreadLocalRandom rng = ThreadLocalRandom.current();
+        
         while(true) {
             
             // Select a user.

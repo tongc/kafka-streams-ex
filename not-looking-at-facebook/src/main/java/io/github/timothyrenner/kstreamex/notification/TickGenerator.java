@@ -16,7 +16,6 @@ public class TickGenerator implements Runnable {
     private String[] users;
     private KafkaProducer producer;
 
-    private ThreadLocalRandom rng = ThreadLocalRandom.current();
     private String message = "Tick";
 
     /** Builds an instance of this producer with the provided configuration.
