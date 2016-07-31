@@ -82,12 +82,11 @@ In addition to the processor API itself, I also wanted to show custom serializat
 ### State Stores and Punctuation
 
 The `MovingAverageProcessor` class uses a state store to hold the last moving average values calculated for each node.
-The values are held in a local `HashMap` instance (which is their primary interaction point in the `process` method), which is copied to the state store every one second.
+~~The values are held in a local `HashMap` instance (which is their primary interaction point in the `process` method), which is copied to the state store every one second.~~
+Turns out this is a pretty bad idea that breaks the code in failover situations.
+See [issue #1](https://github.com/timothyrenner/kafka-streams-ex/issues/1) for details.
+The new version forwards the values in the `punctuate` method, and interacts with the state store in the `process` method.
 The scheduling is done in the `init` method via `context.schedule( ... )`, and the action itself is defined in the `punctuate` method.
-This does mean we won't be _exactly_ up to date with if we restart from a failover (we could lose at most a second's worth of updated averages for each key), but the state store interaction is _not_ in the `process` method, which gets called for every message received.
-
-I don't know how fast interacting with the state store is.
-It might be unnecessarily complex to have a local member _and_ a state store interaction; the state store may be fast enough.
 
 It's also worth noting that even though the topology definition in the `ProcessorKafkaStream` class specifies an in memory state store, it's still durable.
 State stores are backed by an internal Kafka topic that stores the changelog, so it can be restored on failover.
