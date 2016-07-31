@@ -12,8 +12,7 @@ import io.github.timothyrenner.kstreamex.processor.Message;
 
 /** Processor that calculates and forwards the exponential moving average
  *  of a message.
- *  The state (current moving averages for each key) are checkpointed to a
- *  state store every one second.
+ *  
  *  Downstream processors are `type` + "-sink", and state stores are 
  *  `type` + "-store", where `type` is the message type.
  *
@@ -29,9 +28,6 @@ public class MovingAverageProcessor implements Processor<String, Message> {
     
     /** The alpha value for the moving average. */
     private double alpha;
-
-    /** The value of the last average for each key. */
-    private HashMap<String, Double> lastAvgs = new HashMap<String, Double>();
 
     /** Set containing the available valid messages. */
     private static HashSet<String> VALID_TYPES = 
@@ -84,59 +80,40 @@ public class MovingAverageProcessor implements Processor<String, Message> {
     } // Close init.
 
     /** Processes the incoming message, calculating the exponential moving 
-     *  average of the value of the message.
-     *  The value of the average is checkpointed to the state store with each
-     *  message. The message is forwarded to the sink `type` + "-sink", where
-     *  `type` is the message type.
+     *  average of the value of the message and saving the value in the
+     *  state store.
      *
      * {@inheritDoc}
      */
     @Override
     public void process(String key, Message value) {
 
-        // First we need to initialize the lastAvg value if it's not 
-        // in the map.
-        if(!lastAvgs.containsKey(key)) {
-            
-            // If it's in the state store, use that value. Otherwise, use 0.0.
-            // This is particularly important when restoring from a failover.
-            Double storedValue = state.get(key);
-            
-            if(storedValue != null) {
-                lastAvgs.put(key,storedValue);
-            } else {
-                lastAvgs.put(key, 0.0);
-            } // Close if/else on stored value.
+        Double oldValue = state.get(key);
         
-        } // Close if statement on lastAvg being initialized.
-
+        // Verify that the value is present.
+        if(oldValue == null) {
+            oldValue = 0.0;
+        }
+        
         // Now calculate the new moving average.
         double newAvg = alpha * value.getValue() + 
-                        (1 - alpha) * lastAvgs.get(key);
+                        (1 - alpha) * oldValue;
 
-        // Update the in-memory state too.
-        lastAvgs.put(key, newAvg);
+        // Update the state store.
+        state.put(key, newAvg);
 
-        // Foward the new average.
-        context.forward(key, newAvg, type + "-sink");
 
     } // Close process.
 
-    /** Saves the `lastAvgs` map to the state store.
+    /** Forwards the values in the state store downstream.
      *
      * {@inheritDoc}
      */
     @Override
     public void punctuate(long timestamp) {
 
-        // Stores the last moving averages computed in the state store.
-        // If there's a stronger need for more accuracy after failover,
-        // the logic can be moved into the `process` method (in that case you
-        // wouldn't need to save _all_ the keys - only the key for the 
-        // message).
-        lastAvgs.keySet()
-                .stream()
-                .forEach(k -> state.put(k, lastAvgs.get(k)));
+        state.all().forEachRemaining(
+            kv -> context.forward(kv.key, kv.value, type + "-sink"));
     
     } // Close punctuate.
     
