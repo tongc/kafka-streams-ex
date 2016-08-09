@@ -74,6 +74,12 @@ This consumer listens to the output topic, which prints either the fast, medium,
 This example generates its own data, which is a random walk of three keys: "A", "B" and "C".
 Told you I was creative.
 
+When all that's done, fire up the processor.
+
+```bash
+mvn exec:java
+```
+
 ## Deeper Details
 
 This example is pretty involved.
