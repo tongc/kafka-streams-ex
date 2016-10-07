@@ -11,3 +11,4 @@ The repository contains the following examples:
 * [Tumbling Windows](https://github.com/timothyrenner/kafka-streams-ex/tree/master/tumbling-window): Example demonstrating the behavior of tumbling windows by counting the elements on a single key.
 * [Processor](https://github.com/timothyrenner/kafka-streams-ex/tree/master/processor): Example demonstrating the processor API, state stores, and custom serializers.
 * [Not Looking at Facebook](https://github.com/timothyrenner/kafka-streams-ex/tree/master/not-looking-at-facebook): Implementation of a streaming pipeline for notifying users when they aren't looking at Facebook.
+* [KTable](https://github.com/timothyrenner/kafka-streams-ex/tree/master/ktable): Literally a KTable.
