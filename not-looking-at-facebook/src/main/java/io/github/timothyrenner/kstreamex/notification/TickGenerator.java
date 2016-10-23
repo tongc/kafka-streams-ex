@@ -1,7 +1,6 @@
 package io.github.timothyrenner.kstreamex.notification;
 
 import java.util.Properties;
-import java.util.concurrent.ThreadLocalRandom;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -14,7 +13,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 public class TickGenerator implements Runnable {
     
     private String[] users;
-    private KafkaProducer producer;
+    private KafkaProducer<String, String> producer;
 
     private String message = "Tick";
 
