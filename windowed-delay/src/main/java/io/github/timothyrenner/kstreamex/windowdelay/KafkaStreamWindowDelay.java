@@ -62,9 +62,11 @@ public class KafkaStreamWindowDelay {
         KStream<String, Long> longs = builder.stream("timed-longs");
 
         // NOTE: For some odd reason there's a thirty second latency
-        // when pushing these windows out to a topic. This might be
-        // a mailing list item. It's exactly thirty seconds and doesn't
-        // change when the window size or window wait period changes.
+        // when pushing these windows out to a topic. 
+        // It's exactly thirty seconds and doesn't
+        // change when the window size or window wait period changes, which
+        // smells like a configuration option somewhere, but I'm not totally
+        // sure.
         KTable<Windowed<String>, Long> longSums = 
             longs.groupByKey().reduce(
                 (v1, v2) -> v1 + v2,
