@@ -13,3 +13,4 @@ The repository contains the following examples:
 * [Instrumented Processor](https://github.com/timothyrenner/kafka-streams-ex/tree/master/processor-instrumented): A stripped down version of the processor example that logs the values in the state store - designed to run in two nodes (or just two terminals) to show what happens under failover conditions.
 * [Not Looking at Facebook](https://github.com/timothyrenner/kafka-streams-ex/tree/master/not-looking-at-facebook): Implementation of a streaming pipeline for notifying users when they aren't looking at Facebook.
 * [KTable](https://github.com/timothyrenner/kafka-streams-ex/tree/master/ktable): Literally a KTable.
+* [Windowed Delay](https://github.com/timothyrenner/kafka-streams-ex/tree/master/delayed-window): Demonstration of event-time ordering.
