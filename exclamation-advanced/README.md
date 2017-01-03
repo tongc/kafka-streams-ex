@@ -6,13 +6,13 @@ It's designed to read from the console producer and write to a topic with a cons
 ## To Start
 
 This use-case assumes Zookeeper and Kafka are running in local mode,
-with a vanilla Kafka 0.10.0.0 installation downloaded [here](http://kafka.apache.org/downloads.html).
+with a vanilla Kafka 0.10.1.0 installation downloaded [here](http://kafka.apache.org/downloads.html).
 
 You'll need to start up Zookeeper and Kafka before starting.
 First, set the `KAFKA_HOME` environment variable.
 
 ```bash
-KAFKA_HOME=/path/to/kafka/installation #~/kafka/kafka_2.11-0.10.0.0 on my system.
+KAFKA_HOME=/path/to/kafka/installation #~/kafka/kafka_2.11-0.10.1.0 on my system.
 ```
 
 The rest you can execute from the project root.
