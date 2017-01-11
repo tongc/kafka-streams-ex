@@ -48,9 +48,11 @@ public class HoppingWindowKafkaStream {
         // three seconds, etc until the last ten seconds of data are in the
         // windows.
         KTable<Windowed<byte[]>, Long> longCounts = 
-            longs.countByKey(TimeWindows.of("longCounts", 10000L)
-                                        .advanceBy(1000L),
-                            Serdes.ByteArray());
+            longs.groupByKey()
+                  .count(TimeWindows.of(10000L)
+                                    .advanceBy(1000L)
+                                    .until(10000L),
+                         "long-counts");
                                         
         // Write to output topic.
         longCounts.toStream((k,v) -> k.key())

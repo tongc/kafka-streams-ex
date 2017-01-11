@@ -1,5 +1,5 @@
 $KAFKA_HOME/bin/kafka-console-consumer.sh \
---zookeeper localhost:2181 \
+--bootstrap-server localhost:9092 \
 --topic "long-counts-all" \
 --property value.deserializer=org.apache.kafka.common.serialization.LongDeserializer
 
