@@ -47,9 +47,11 @@ public class TumblingWindowKafkaStream {
             Serdes.ByteArray(), Serdes.Long(), "longs");
 
         // The tumbling windows will clear every ten seconds.
-        KTable<Windowed<byte[]>, Long> longCounts = 
-            longs.countByKey(TimeWindows.of("longCounts", 10000L),
-                             Serdes.ByteArray());
+        KTable<Windowed<byte[]>, Long> longCounts =
+            longs.groupByKey()
+                 .count(TimeWindows.of(10000L)
+                                   .until(10000L),
+                        "long-counts");
 
         // Write to topics.
         longCounts.toStream((k,v) -> k.key())
