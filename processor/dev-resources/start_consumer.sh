@@ -1,5 +1,5 @@
 $KAFKA_HOME/bin/kafka-console-consumer.sh \
---zookeeper localhost:2181 \
+--bootstrap-server localhost:9092 \
 --topic fast-avgs \
 --property print.key=true \
 --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer \

@@ -27,14 +27,14 @@ Depending on the use case, this may or may not be the desired behavior.
 
 ## Running the Example
 
-This example assumes Zookeeper and Kafka are running in local mode, with a vanilla Kafka 0.10.0.0 installation downloaded [here](http://kafka.apache.org/downloads.html).
+This example assumes Zookeeper and Kafka are running in local mode, with a vanilla Kafka 0.10.1.1 installation downloaded [here](http://kafka.apache.org/downloads.html).
 
 You'll need to start up Zookeeper and Kafka before running the example.
 There are helper scripts to do this.
 To use them, set `KAFKA_HOME` environment variable.
 
 ```bash
-KAFKA_HOME=/path/to/kafka/installation #~/kafka/kafka_2.11-0.10.0.0 on my system.
+KAFKA_HOME=/path/to/kafka/installation #~/kafka/kafka_2.11-0.10.1.1 on my system.
 ```
 
 You can execute the startup scripts from the project root.
