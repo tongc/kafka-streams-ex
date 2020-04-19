@@ -83,7 +83,6 @@ public class HoppingWindowKafkaStream {
             new KafkaProducer<String, Long>(producerConfig);
         
         Random rng = new Random(12345L);
-
         List<String> marketIds = new ArrayList<>();
         marketIds.add("marketId1");
         marketIds.add("marketId2");
